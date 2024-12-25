@@ -2,59 +2,65 @@ from pyperclip import copy
 
 
 re_emoji = r'''
-🇺🇸,USA?,美[国國]|华盛顿|波特兰|达拉斯|俄勒冈|凤凰城|菲尼克斯|费利蒙|弗里蒙特|硅谷|旧金山|拉斯维加斯|洛杉|圣何塞|圣荷西|圣塔?克拉拉|西雅图|芝加哥|哥伦布|纽约|阿什本,America|United[^a-z]*States|Washington|Portland|Dallas|Oregon|Phoenix|Fremont|Valley|Francisco|Vegas|Los[^a-z]*Angeles|San[^a-z]*Jose|Santa[^a-z]*Clara|Seattle|Chicago|Columbus|York|Ashburn
+🇺🇸,USA?|UMI?,美[国國]|华盛顿|波特兰|达拉斯|俄勒冈|凤凰城|菲尼克斯|费利蒙|弗里蒙特|硅谷|旧金山|拉斯维加斯|洛杉|圣何塞|圣荷西|圣塔?克拉拉|西雅图|芝加哥|哥伦布|纽约|阿什本|纽瓦克|丹佛|加利福尼亚|弗吉尼亚|马纳萨斯|俄亥俄|得克萨斯,America|United[^a-z]*States|Washington|Portland|Dallas|Oregon|Phoenix|Fremont|Valley|Francisco|Vegas|Los[^a-z]*Angeles|San[^a-z]*Jose|Santa[^a-z]*Clara|Seattle|Chicago|Columbus|York|Ashburn|Newark|Denver|California|Virginia|Manassas|Ohio|Texas
 🇭🇰,HKG?|CMI|HGC|HKT|HKBN|WTT|PCCW,香港,Hong
-🇯🇵,JPN?,日本|东京|大阪|名古屋|埼玉,Japan|Tokyo|Osaka|Nagoya|Saitama
+🇯🇵,JPN?,日本|东京|大阪|名古屋|埼玉|福冈,Japan|Tokyo|Osaka|Nagoya|Saitama|Fukuoka
 🇸🇬,SGP?,新加坡|[狮獅]城,Singapore
-🇹🇼,TWN?|CHT|HiNet,[台臺][湾灣]|新[北竹]|彰化,Taiwan
-🇷🇺,RUS?,俄[国國]|俄[罗羅]斯|莫斯科|圣彼得堡|西伯利亚|伯力|哈巴罗夫斯克,Russia|Moscow|Petersburg|Siberia|Khabarovsk
+🇹🇼,TWN?|CHT|HiNet,[台臺][湾灣北]|新[北竹]|彰化|高雄,Taiwan|Taipei|Hsinchu|Changhua|Kaohsiung
+🇷🇺,RUS?,俄[国國]|俄[罗羅]斯|莫斯科|圣彼得堡|西伯利亚|伯力|哈巴罗夫斯克,Russia|Moscow|Peters?burg|Siberia|Khabarovsk
 🇬🇧,UK|GBR?,英[国國]|伦敦|加的夫,Kingdom|England|London|Cardiff
 🇨🇦,CAN?,加拿大|[枫楓][叶葉]|多伦多|蒙特利尔|温哥华,Canada|Toronto|Montreal|Vancouver
 🇫🇷,FRA?,法[国國]|巴黎|马赛,France|Paris|Marseille|Marselha
 🇰🇵,KP|PRK,朝[鲜鮮],North[^a-z]*Korea
 🇰🇷,KO?R,[韩韓][国國]|首尔|春川,Korea|Seoul|Chuncheon
-🇩🇪,DEU?,德[国國]|法兰克福,Germany|Frankfurt
-🇮🇳,IND?,印度|孟买|加尔各答|贾坎德|泰米尔纳德|海得拉巴,India|Mumbai|Kolkata|Jharkhand|Tamil|Hyderabad
+🇮🇪,IE|IRL,爱尔兰|都柏林,Ireland|Dublin
+🇩🇪,DEU?,德[国國]|法兰克福|柏林,German|Frankfurt|Berlin
+🇮🇩,IDN?,印尼|印度尼西亚|雅加达,Indonesia|Jakarta
+🇮🇳,IND?,印度|孟买|加尔各答|贾坎德|泰米尔纳德|海得拉巴|班加罗尔,India|Mumbai|Kolkata|Jharkhand|Tamil|Hyderabad|Bangalore
 🇮🇱,IL|ISR,以色列|耶路撒冷,Israel|Jerusalem|Yerushalayim
 🇦🇺,AUS?,澳大利[亚亞]|澳洲|悉尼|墨尔本,Australia|Sydney|Melbourne
-🇦🇪,AR?E|UAE,阿联酋|迪拜|阿布扎比,Emirates|Dubai|Dhabi
+🇦🇪,AR?E|UAE,阿联酋|迪拜|阿布扎比|富查伊拉,Emirates|Dubai|Dhabi|Fujairah
 🇧🇦,BA|BIH,波黑|波[士斯]尼亚|[黑赫]塞哥维[纳那],Bosnia|Herzegovina
 🇧🇷,BRA?,巴西|圣保罗|维涅杜,Brazil|Paulo|Vinhedo
 🇲🇴,MO|MAC|CTM,澳[门門],Macao
 🇿🇦,ZAF?,南非|约(翰内斯)?堡,Africa|Johannesburg
 🇨🇭,CHE?,瑞士|苏黎世,Switzerland|Zurich
-🇮🇪,IE|IRL,爱尔兰|都柏林,Ireland|Dublin
-🇮🇩,IDN?,印尼|印度尼西亚|雅加达,Indonesia|Jakarta
+🇸🇲,SMR?,圣[马玛][力丽][诺络],San[^a-z]*Marino
 🇬🇶,GN?Q,赤道几内亚,Equatorial[^a-z]*Guinea
 🇫🇮,FIN?,芬兰|赫尔辛基,Finland|Helsinki
 🇹🇭,THA?,泰国|曼谷,Thailand|Bangkok
 🇲🇽,ME?X,墨西哥|克雷塔罗,Mexico|Queretaro
 🇸🇪,SW?E,瑞典|斯德哥尔摩,Sweden|Stockholm
 🇹🇷,TU?R,土耳其|伊斯坦布尔,Turkey|Istanbul
-🇸🇦,SAU?,沙特|吉达,Arabia|J[eu]dda
+🇸🇦,SAU?,沙特|吉达|利雅得,Arabia|J[eu]dda|Riyadh
 🇱🇰,LKA?,斯里兰卡,Sri[^a-z]*Lanka
 🇦🇹,AU?T,奥地利|维也纳,Austria|Vienna
 🇴🇲,OMN?,阿曼|马斯喀特,Oman|Muscat
 🇪🇸,ESP?,西班牙|马德里,Spain|Madrid
 🇸🇮,SI|SVN,斯洛文尼亚,Slovenia
-🇳🇱,NLD?,荷兰|阿姆斯特丹,Netherlands
+🇳🇱,NLD?,荷兰|阿姆斯特丹,Netherlands|Amsterdam
 🇪🇪,EE|EST,爱沙尼亚,Estonia
-🇮🇹,ITA?,意大利|米兰,Italy|Milan
+🇷🇴,ROU?,罗马[尼利]亚|布加勒斯特,Romania|Bucharest
+🇮🇹,ITA?,意大利|米兰|罗马,Italy|Milan|Rome
 🇱🇺,LUX?,卢森堡,Luxembo?urg
-🇵🇭,PHL?,菲律宾,Philippines
+🇵🇭,PHL?,菲律宾|马尼拉,Philippines|Manila
 🇺🇦,UA|UKR,乌克兰,Ukraine
 🇦🇿,AZE?,阿塞拜疆,Azerbaijan
 🇰🇬,KGZ?,吉尔吉斯斯坦,Kyrgyzstan
 🇰🇿,KA?Z,哈萨克斯坦,Kazakhstan
+🇦🇬,AT?G,安提瓜和巴布达,Antigua
+🇹🇲,TK?M,土库曼,Turkmenistan
+🇦🇫,AFG?,阿富汗,Afghanistan
+🇸🇧,SL?B,所罗门群岛,Solomon
 🇷🇸,RS|SRB,塞尔维亚,Serbia
 🇺🇿,UZB?,乌兹别克斯坦,Uzbekistan
 🇦🇷,ARG?,阿根廷,Argentina
-🇲🇰,MKD?,前南斯拉夫|马其顿,Macedonia
+🇲🇰,MKD?,前南斯拉夫|马其顿|北马,Macedonia
 🇸🇰,SV?K,斯洛伐克,Slovensko
 🇻🇪,VEN?,委内瑞拉,Venezuela
-🇬🇱,GR?L,格陵兰,Greenland
+🇬🇱,GR?L,格[陵林]兰,Greenland
 🇵🇸,PSE?,巴勒斯坦,Palestine
-🇧🇬,BGR?,保加利亚,Bulgaria
+🇧🇬,BGR?,保加利亚|索[非菲]亚,Bulgaria|Sofia
 🇨🇴,COL?,哥伦比亚,Colombia
 🇬🇮,GIB?,直布罗陀,Gibraltar
 🇬🇹,GTM?,危地马拉,Guatemala
@@ -63,11 +69,14 @@ re_emoji = r'''
 🇿🇼,ZWE?,津巴布韦,Zimbabwe
 🇰🇭,KHM?,柬埔寨,Cambodia
 🇱🇹,LTU?,立陶宛,Lietuvos
+🇧🇲,BMU?,百慕大,Bermuda
+🇫🇴,FR?O,法罗群岛,Faroe
 🇲🇳,MNG?,蒙古,Mongolia
-🇲🇾,MYS?,马来,Malaysia
-🇵🇰,PA?K,巴基斯坦,Pakistan
+🇲🇾,MYS?,马来|吉隆坡,Malaysia|Kuala
+🇵🇰,PA?K,巴基斯坦|卡拉奇,Pakistan|Karachi
 🇵🇹,PR?T,葡萄牙,Portugal
 🇸🇴,SOM?,索马里,Somalia
+🇦🇼,AB?W,阿鲁巴,Aruba
 🇩🇰,DN?K,丹麦,Denmark
 🇮🇸,ISL?,冰岛,Iceland
 🇦🇱,ALB?,阿尔巴尼亚,Albania
@@ -76,9 +85,8 @@ re_emoji = r'''
 🇭🇷,HRV?,克罗地亚,Croatia
 🇭🇺,HUN?,匈牙利,Hungary
 🇲🇩,MDA?,摩尔多瓦,Moldova
-🇳🇬,NGA?,尼日利亚,Nigeria
+🇳🇬,NGA?,尼日利亚|拉各斯,Nigeria|Lagos
 🇳🇿,NZL?,新西兰,Zealand
-🇷🇴,ROU?,罗马[尼利]亚,Romania
 🇧🇧,BR?B,巴巴多斯,Barbados
 🇹🇳,TU?N,突尼斯,Tunisia
 🇺🇾,UR?Y,乌拉圭,Uruguay
@@ -87,12 +95,12 @@ re_emoji = r'''
 🇲🇦,MAR?,摩洛哥,Morocco
 🇦🇲,AR?M,亚美尼亚,Armenia
 🇲🇲,MMR?,缅甸,Myanmar
-🇵🇱,PO?L,波兰,Poland
+🇵🇱,PO?L,波兰|华沙,Poland|Warsaw
 🇨🇾,CYP?,塞浦路斯,Cyprus
-🇪🇺,EUE?,欧洲,Europe
+🇪🇺,EUE?,欧[洲盟],Euro
 🇬🇷,GRC?,希腊,Greece
 🇯🇴,JOR?,约旦,Jordan
-🇱🇻,LVA?,拉脱维亚,Latvia
+🇱🇻,LVA?,拉脱维亚|里加,Latvia|Riga
 🇳🇴,NOR?,挪威,Norway
 🇵🇦,PAN?,巴拿马,Panama
 🇵🇷,PRI?,波多黎各,Puerto
@@ -102,7 +110,7 @@ re_emoji = r'''
 🇧🇹,BTN?,不丹,Bhutan
 🇨🇱,CH?L,智利,Chile
 🇨🇷,CRI?,哥斯达黎加,Costa
-🇨🇿,CZE?,捷克,Czech
+🇨🇿,CZE?,捷克|布拉格,Czech|Prague
 🇪🇬,EGY?,埃及,Egypt
 🇰🇪,KEN?,肯尼亚,Kenya
 🇳🇵,NPL?,尼泊尔,Nepal
@@ -116,7 +124,11 @@ re_emoji = r'''
 🇦🇴,AG?O,安哥拉,Angola
 🇶🇦,QAT?,卡塔尔,Qatar
 🇱🇾,LB?Y,利比亚,Libya
-🇧🇭,BHR?,巴林,Bahrain
+🇧🇭,BHR?,巴林|麦纳麦,Bahrain|Manama
+🇾🇪,YEM?,也门,Yemen
+🇸🇩,SDN?,苏丹,Sudan
+🇨🇺,CUB?,古巴,Cuba
+🇲🇱,MLI?,马里,Mali
 🇫🇯,FJI?,斐济,Fiji
 '''.splitlines()
 
